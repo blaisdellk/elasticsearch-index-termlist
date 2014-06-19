@@ -136,6 +136,10 @@ public class TransportTermlistAction
             Map<String,TermInfo> map = new CompactHashMap<String,TermInfo>();
             IndexReader reader = searcher.reader();
             Fields fields = MultiFields.getFields(reader);
+            //setup term filtering thresholds.  min is at least 1 to force skip of bad terms
+            Integer maxDF = (int) (Math.round((reader.numDocs() * (float) request.getMaxDFpct()/100)));
+            Integer minDF = (request.getMinDF()<1) ? request.getMinDF() : 1;
+
             if (fields != null) {
                 for (String field : fields) {
                     // skip internal fields
@@ -148,7 +152,10 @@ public class TransportTermlistAction
                             TermsEnum termsEnum = terms.iterator(null);
                             BytesRef text;
                             while ((text = termsEnum.next()) != null) {
-                                // skip invalid terms
+                                // skip filtered terms and default minDF of 1 will skip invalid terms
+                                if ((termsEnum.docFreq() < minDF) || (termsEnum.docFreq() > maxDF)) {
+                                    continue;
+                                }
                                 if (termsEnum.docFreq() < 1) {
                                     continue;
                                 }

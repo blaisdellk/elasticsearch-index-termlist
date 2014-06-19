@@ -17,6 +17,10 @@ class ShardTermlistRequest extends BroadcastShardOperationRequest {
 
     private boolean withTotalFreq;
 
+    private Integer maxDFpct;
+
+    private Integer minDF;
+
     ShardTermlistRequest() {
     }
 
@@ -26,6 +30,8 @@ class ShardTermlistRequest extends BroadcastShardOperationRequest {
         this.size = request.getSize();
         this.withDocFreq = request.getWithDocFreq();
         this.withTotalFreq = request.getWithTotalFreq();
+        this.minDF = request.getMinDF();
+        this.maxDFpct = request.getMaxDFpct();
     }
 
     public void setField(String field) {
@@ -59,6 +65,12 @@ class ShardTermlistRequest extends BroadcastShardOperationRequest {
     public boolean getWithTotalFreq() {
         return withTotalFreq;
     }
+
+    public void setMaxDFpct(Integer maxDFpct) {this.maxDFpct = maxDFpct;}
+    public Integer getMaxDFpct() {return maxDFpct;}
+
+    public void setMinDF(Integer minDF) {this.minDF = minDF;}
+    public Integer getMinDF() {return minDF;}
 
     @Override
     public void readFrom(StreamInput in) throws IOException {

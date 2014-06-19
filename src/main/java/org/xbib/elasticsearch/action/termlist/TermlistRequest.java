@@ -17,6 +17,10 @@ public class TermlistRequest extends BroadcastOperationRequest<TermlistRequest> 
 
     private boolean withTotalFreq;
 
+    private Integer maxDFpct;
+
+    private Integer minDF;
+
     TermlistRequest() {
     }
 
@@ -54,6 +58,12 @@ public class TermlistRequest extends BroadcastOperationRequest<TermlistRequest> 
     public boolean getWithTotalFreq() {
         return withTotalFreq;
     }
+
+    public void setMaxDFpct(Integer maxDFpct) {this.maxDFpct = maxDFpct;}
+    public Integer getMaxDFpct() {return maxDFpct;}
+
+    public void setMinDF(Integer minDF) {this.minDF = minDF;}
+    public Integer getMinDF() {return minDF;}
 
     @Override
     public void readFrom(StreamInput in) throws IOException {

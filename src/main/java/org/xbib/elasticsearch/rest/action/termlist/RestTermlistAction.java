@@ -41,6 +41,9 @@ public class RestTermlistAction extends BaseRestHandler {
         termlistRequest.setSize(request.paramAsInt("size", 0));
         termlistRequest.setWithDocFreq(request.paramAsBoolean("docfreqs", false));
         termlistRequest.setWithTotalFreq(request.paramAsBoolean("totalfreqs", false));
+        termlistRequest.setMaxDFpct(request.paramAsInt("maxDFpct",0));
+        termlistRequest.setMinDF(request.paramAsInt("minDF",0));
+
         client.execute(TermlistAction.INSTANCE, termlistRequest, new RestBuilderListener<TermlistResponse>(channel) {
 
 			@Override
