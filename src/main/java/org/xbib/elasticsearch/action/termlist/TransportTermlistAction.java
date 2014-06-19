@@ -138,8 +138,9 @@ public class TransportTermlistAction
             Fields fields = MultiFields.getFields(reader);
             //setup term filtering thresholds.  min is at least 1 to force skip of bad terms
             Integer maxDF = (int) (Math.round((reader.numDocs() * (float) request.getMaxDFpct()/100)));
-            Integer minDF = (request.getMinDF()<1) ? request.getMinDF() : 1;
-
+            Integer minDF = (request.getMinDF() > 1) ? request.getMinDF() : 1;
+            System.out.println(request.getMinDF());
+            System.out.println(minDF);
             if (fields != null) {
                 for (String field : fields) {
                     // skip internal fields
