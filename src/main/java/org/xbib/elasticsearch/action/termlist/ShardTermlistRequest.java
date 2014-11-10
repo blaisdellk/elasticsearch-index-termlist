@@ -1,4 +1,3 @@
-
 package org.xbib.elasticsearch.action.termlist;
 
 import org.elasticsearch.action.support.broadcast.BroadcastShardOperationRequest;
@@ -10,6 +9,10 @@ import java.io.IOException;
 class ShardTermlistRequest extends BroadcastShardOperationRequest {
 
     private String field;
+
+    private String term;
+
+    private Integer from;
 
     private Integer size;
 
@@ -27,6 +30,8 @@ class ShardTermlistRequest extends BroadcastShardOperationRequest {
     public ShardTermlistRequest(String index, int shardId, TermlistRequest request) {
         super(index, shardId, request);
         this.field = request.getField();
+        this.term = request.getTerm();
+        this.from = request.getFrom();
         this.size = request.getSize();
         this.withDocFreq = request.getWithDocFreq();
         this.withTotalFreq = request.getWithTotalFreq();
@@ -40,6 +45,22 @@ class ShardTermlistRequest extends BroadcastShardOperationRequest {
 
     public String getField() {
         return field;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setFrom(Integer from) {
+        this.from = from;
+    }
+
+    public Integer getFrom() {
+        return from;
     }
 
     public void setSize(Integer size) {
@@ -76,6 +97,9 @@ class ShardTermlistRequest extends BroadcastShardOperationRequest {
     public void readFrom(StreamInput in) throws IOException {
         super.readFrom(in);
         field = in.readString();
+        term = in.readString();
+        from = in.readInt();
+        size = in.readInt();
         withDocFreq = in.readBoolean();
         withTotalFreq = in.readBoolean();
     }
@@ -84,6 +108,9 @@ class ShardTermlistRequest extends BroadcastShardOperationRequest {
     public void writeTo(StreamOutput out) throws IOException {
         super.writeTo(out);
         out.writeString(field);
+        out.writeString(term);
+        out.writeInt(from);
+        out.writeInt(size);
         out.writeBoolean(withDocFreq);
         out.writeBoolean(withTotalFreq);
     }
